@@ -1,0 +1,144 @@
+{% load static wagtailcore_tags wagtailuserbar footer_tags%}
+
+{% get_menu 'main' as footer %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        {% block title %}
+        {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+        {% endblock %}
+        {% block title_suffix %}
+        {% wagtail_site as current_site %}
+        {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+        {% endblock %}
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content="html, css, javascript, jquery">
+
+
+    {# Global stylesheets #}
+
+
+    <link rel="stylesheet" href="{% static 'css/vendor/icomoon/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor/jquery.fancybox.min.css' %}">
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/asertiva_portfolio.css' %}">
+    {% endblock %}
+</head>
+
+<body data-spy="scroll" data-target=".site-nav-target" data-offset="200" class="{% block body_class %}{% endblock %}">
+<nav class="unslate_co--site-mobile-menu">
+    <div class="close-wrap d-flex">
+        <a href="#" class="d-flex ml-auto js-menu-toggle">
+            <span class="close-label">Cerrar</span>
+            <div class="close-times">
+                <span class="bar1"></span>
+                <span class="bar2"></span>
+            </div>
+        </a>
+    </div>
+    <div class="site-mobile-inner"></div>
+</nav>
+
+
+<div class="unslate_co--site-wrap">
+    <div class="unslate_co--site-inner">
+        <nav class="unslate_co--site-nav site-nav-target">
+
+            <div class="container">
+
+                <div class="row align-items-center justify-content-between text-left">
+                    <div class="col-md-5 text-right">
+                        <ul class="site-nav-ul js-clone-nav text-left d-none d-lg-inline-block">
+                            <li><a href="/#home-section" class="nav-link">Incio</a></li>
+                            <li><a href="/#portfolio-section" class="nav-link">Portafolio</a></li>
+                            <li><a href="/#about-section" class="nav-link">Nosotros</a></li>
+                            <li><a href="/#services-section" class="nav-link">Servicios</a></li>
+                        </ul>
+                    </div>
+                    <div class="site-logo pos-absolute">
+                        <a href="/#home-section" class="unslate_co--site-logo">
+                            <img src="{% static 'images/asertiva_logos/nav_logo.png' %}"
+                                 class="unslate_co--site-logo"></a>
+                    </div>
+                    <div class="col-md-5 text-right text-lg-left">
+                        <ul class="site-nav-ul js-clone-nav text-left d-none d-lg-inline-block">
+                            {% if settings.social_settings.SocialMediaSettings.whatsapp %}
+                            <li><a href="https://wa.me/57{{ settings.social_settings.SocialMediaSettings.whatsapp }}" class="nav-link">WhatsApp</a></li>
+                            {% endif%}
+                            <li><a href="/#testimonial-section" class="nav-link">Testimonios</a></li>
+                            <li><a href="/#journal-section" class="nav-link">Blog</a></li>
+                            <li><a href="/#contact-section" class="nav-link">Contacto</a></li>
+                        </ul>
+
+                        <ul class="site-nav-ul-none-onepage text-right d-inline-block d-lg-none">
+                            <li><a href="#" class="js-menu-toggle">Menu</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+        <!-- END nav -->
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    <footer class="unslate_co--footer unslate_co--section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-7">
+
+                    <div class="footer-site-logo"><a href="#">
+                        <img src="{% static 'images/asertiva_logos/nav_logo.png' %}"
+                             class="unslate_co--site-logo"></a></div>
+
+                    <ul class="footer-site-social">
+                        {% for item in footer.footer_items.all%}
+                        <li><a href="{{item.url_sitio}}" {% if item.abrir_en_nueva_ventana %} target="_blank" {% endif %}>
+                            {{item.titulo_link}}</a></li>
+                        {% endfor %}
+                        {% if settings.social_settings.SocialMediaSettings.facebook %}
+                        <li><a href="{{ settings.social_settings.SocialMediaSettings.facebook }}">Facebook</a></li>
+                        {% endif%}
+                        {% if settings.social_settings.SocialMediaSettings.instagram %}
+                        <li><a href="{{ settings.social_settings.SocialMediaSettings.instagram }}">Instagram</a></li>
+                        {% endif%}
+                        {% if settings.social_settings.SocialMediaSettings.whatsapp %}
+                        <li><a href="https://wa.me/57{{ settings.social_settings.SocialMediaSettings.whatsapp }}">WhatsApp</a></li>
+                        {% endif%}
+                    </ul>
+
+                    <p class="site-copyright"> Copyright © {% now "Y" %} | Asertiva Comunicaciones</p>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Loader -->
+<div id="unslate_co--overlayer"></div>
+<div class="site-loader-wrap">
+    <div class="site-loader"></div>
+</div>
+{# Global javascript #}
+<script src="{% static 'js/scripts-dist.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/asertiva_portfolio.js' %}"></script>
+{% endblock %}
+</body>
+</html>

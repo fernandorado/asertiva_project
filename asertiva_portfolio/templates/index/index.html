@@ -1,0 +1,362 @@
+{% extends 'base.html' %}
+
+{% load static wagtailcore_tags wagtailimages_tags  %}
+
+{% block content %}
+
+{% for loop_cycle in self.main_image.all %}
+{% image loop_cycle.imagen_fondo fill-1900x1432 as img%}
+<div class="cover-v1 jarallax" style="background-image: url('{{img.url}}');" id="home-section">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-md-7 mx-auto text-center">
+                {% if loop_cycle.titulo_principal %}
+                <h1 class="heading gsap-reveal-hero">{{loop_cycle.titulo_principal}}</h1>
+                {% endif %}
+                {% if loop_cycle.subtitulo %}
+                <h2 class="subheading gsap-reveal-hero">{{loop_cycle.subtitulo}}</h2>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+
+    <a href="#portfolio-section" class="mouse-wrap smoothscroll">
+          <span class="mouse">
+            <span class="scroll"></span>
+          </span>
+        <span class="mouse-label">Scroll</span>
+    </a>
+
+</div>
+<!-- END .cover-v1 -->
+
+
+<div class="unslate_co--section" id="portfolio-section">
+    <div class="container">
+        <div class="relative">
+            <div class="loader-portfolio-wrap">
+                <div class="loader-portfolio"></div>
+            </div>
+        </div>
+        <div id="portfolio-single-holder"></div>
+        <div class="portfolio-wrapper">
+            <div class="d-flex align-items-center mb-4 gsap-reveal-filter">
+                <h2 class="mr-auto heading-h2"><span class="gsap-reveal">Portafolio</span></h2>
+            </div>
+
+            <div id="posts" class="row gutter-isotope-item">
+                {% for i in items%}
+                <div class="item web branding col-sm-6 col-md-6 col-lg-4 isotope-mb-2">
+                    <a href="{% pageurl i %}"
+                       class="portfolio-item ajax-load-page isotope-item gsap-reveal-hero" data-id="1">
+                        <div class="overlay">
+                            <span class="wrap-icon icon-link2"></span>
+                            <div class="portfolio-item-content">
+                                <h3>{{i.titulo_principal}}</h3>
+                                <p class="mt-1">{{i.funciones_cargo}}</p>
+                            </div>
+                        </div>
+                        {% image i.main_image width-380 %}
+                        <img src="{{i.main_image.url}}" class="lazyload  img-fluid"/>
+                    </a>
+                </div>
+                {% endfor %}
+
+                {% for p in images %}
+                <div class="item web packaging col-sm-6 col-md-6 col-lg-4 isotope-mb-2">
+                    <a href="{{img.url}}"
+                       class="portfolio-item isotope-item gsap-reveal-hero" data-fancybox="gallery">
+                        <div class="overlay">
+                            <span class="wrap-icon icon-photo2"></span>
+                            <div class="portfolio-item-content">
+                                {% if p.titulo_imagen %}
+                                <h3>{{p.titulo_imagen}}</h3>
+                                {% endif %}
+                                {% if p.subtitulo_imagen %}
+                                <p class="mt-1">{{p.subtitulo_imagen}}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% image p.imagen_post width-380 as img %}
+                        <img src="{{img.url}}" class="lazyload  img-fluid"/>
+                    </a>
+
+                </div>
+                {% endfor %}
+
+                {% for v in videos%}
+                <div class="item web branding col-sm-6 col-md-6 col-lg-4 isotope-mb-2">
+                    <a href="{{v.url_video}}"
+                       class="portfolio-item isotope-item gsap-reveal-hero" data-fancybox="gallery">
+                        <div class="overlay">
+                            <span class="wrap-icon icon-play_circle_filled"></span>
+                            <div class="portfolio-item-content">
+                                {% if v.titulo_video %}
+                                <h3>{{ v.titulo_video }}</h3>
+                                {% endif %}
+                                {% if v.subtitulo_video %}
+                                <p class="mt-1">{{ v.subtitulo_video }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% image v.cover_video width-380 as cover %}
+                        <img src="{{cover.url}}" class="lazyload  img-fluid"/>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="unslate_co--section">
+    <div class="container">
+        <div class="owl-carousel logo-slider">
+            {%for l in self.logo_image.all %}
+            {% image l.logo_cliente fill-360x160 as logo%}
+            <div class="logo-v1 gsap-reveal">
+                <img src="{{logo.url}}" alt="Logo" class="img-fluid">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="unslate_co--section" id="about-section">
+    <div class="container">
+        {% for a in about %}
+        {% if a.titulo_nosotros%}
+        <div class="section-heading-wrap text-center mb-5">
+            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">{{a.titulo_nosotros}}</span></h2>
+            <span class="gsap-reveal">
+            <img src="{% static 'images/divider.png' %}" alt="divider" width="76">
+            </span>
+        </div>
+        {% endif %}
+
+        <div class="row mt-5 justify-content-between">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <figure class="dotted-bg gsap-reveal-img ">
+                    {% image a.nosotros_imagen width-800 as pic%}
+                    <img src="{{ pic.url }}" alt="Image" class="img-fluid">
+                </figure>
+            </div>
+            <div class="col-lg-4 pr-lg-5">
+                {% if a.titulo_nosotros%}
+                <h3 class="mb-4 heading-h3"><span class="gsap-reveal">{{a.subtitulo_nosotros}}</span></h3>
+                {% endif %}
+                {% if a.texto_nosotros %}
+                <p class="lead gsap-reveal text-justify">{{a.texto_nosotros | richtext}} </p>
+                {% endif %}
+                {% if a.folleto %}
+                <p class="gsap-reveal"><a href="{{a.folleto.url}}" class="btn btn-outline-pill btn-custom-light">Descarga
+                    mi CV</a>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="unslate_co--section" id="services-section">
+    <div class="container">
+
+        {% if services %}
+        <div class="section-heading-wrap text-center mb-5">
+            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">Nuestros Servicios</span></h2>
+            <span class="gsap-reveal"><img src="{% static 'images/divider.png' %}" alt="divider" width="76"></span>
+        </div>
+        {% endif %}
+
+
+        <div class="row gutter-v3">
+            {% for s in services %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="feature-v1" data-aos="fade-up" data-aos-delay="200">
+                    <div class="wrap-icon mb-3">
+                        {% image s.icono_servicio width-80 as icon%}
+                        <img src="{{ icon.url }}" alt="Image" width="50">
+                    </div>
+                    <h3>{{ s.titulo_servicio }}</h3>
+                    <p>{{ s.resumen_servicio }} </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+<div class="unslate_co--section" id="testimonial-section">
+
+    {% if self.client_image.all %}
+    <div class="container">
+        <div class="section-heading-wrap text-center mb-5">
+            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">Mis Clientes</span></h2>
+            <span class="gsap-reveal"><img src="{% static 'images/divider.png' %}" alt="divider" width="76"></span>
+        </div>
+    </div>
+    <div class="owl-carousel testimonial-slider" data-aos="fade-up">
+        {% for c in self.client_image.all %}
+        <div>
+            <div class="testimonial-v1">
+                <div class="testimonial-inner-bg">
+                    <span class="quote">&ldquo;</span>
+                    <blockquote>
+                        {{c.opnion_cliente | richtext }}
+                    </blockquote>
+                </div>
+
+                <div class="testimonial-author-info">
+                    {% image c.imagen_cliente fill-600x600 as profile%}
+                    <img src="{{profile.url}}" alt="Image">
+                    <h3>{{c.nombre_cliente}}</h3>
+                    <span class="d-block position">{{c.trabajo_realizado }}</span>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+<!-- END testimonial -->
+
+<div class="unslate_co--section" id="journal-section">
+    <div class="container">
+        {% if blog %}
+        <div class="section-heading-wrap text-center mb-5">
+            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">Nuestro Blog</span></h2>
+            <span class="gsap-reveal"><img src="{% static 'images/divider.png' %}" alt="divider" width="76"></span>
+        </div>
+        {% endif %}
+
+        <div class="row gutter-v4 align-items-stretch">
+            {% for b in blog %}
+            {% if forloop.first %}
+            <div class="col-sm-6 col-md-6 col-lg-8 blog-post-entry" data-aos="fade-up" data-aos-delay="0">
+                <a href="{% pageurl b %}" class="grid-item blog-item w-100 h-100">
+                    <div class="overlay">
+                        <div class="portfolio-item-content">
+                            <h3>{{b.titulo_blog}}</h3>
+                            {% if b.autor%}
+                            <p class="post-meta">Escrito por {{ b.autor }} </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% for x in b.fondo_blog.all %}
+                    {% image x.imagen_blog fill-900x1125 as postimg%}
+                    <img src="{{postimg.url}}" class="lazyload" alt="Image"/>
+                    {% endfor %}
+                </a>
+            </div>
+
+            {% else %}
+            <div class="col-sm-6 col-md-6 col-lg-4 blog-post-entry" data-aos="fade-up" data-aos-delay="100">
+                <a href="{% pageurl b %}" class="grid-item blog-item w-100 h-100">
+                    <div class="overlay">
+                        <div class="portfolio-item-content">
+                            <h3>{{b.titulo_blog}}</h3>
+                            {% if b.autor%}
+                            <p class="post-meta">Escrito por {{ b.autor }} </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% for y in b.fondo_blog.all %}
+                    {% image y.imagen_blog fill-900x1125 as postpic%}
+                    <img src="{{postpic.url}}" class="lazyload" alt="Image"/>
+                    {% endfor %}
+                </a>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+<!-- END blog posts -->
+
+
+<div class="unslate_co--section" id="contact-section">
+    <div class="container">
+        <div class="section-heading-wrap text-center mb-5">
+            <h2 class="heading-h2 text-center divider"><span class="gsap-reveal">Contacto</span></h2>
+            <span class="gsap-reveal"><img src="{% static 'images/divider.png' %}" alt="divider" width="76"></span>
+        </div>
+
+
+        <div class="row justify-content-between">
+
+            <div class="col-md-6">
+                <form method="post" class="form-outline-style-v1" id="contactForm">
+                    <div class="form-group row mb-0">
+
+                        <div class="col-lg-6 form-group gsap-reveal">
+                            <label for="name">Nombre</label>
+                            <input name="name" type="text" class="form-control" id="name">
+                        </div>
+                        <div class="col-lg-6 form-group gsap-reveal">
+                            <label for="email">Correo electronico</label>
+                            <input name="email" type="email" class="form-control" id="email">
+                        </div>
+                        <div class="col-lg-12 form-group gsap-reveal">
+                            <label for="message">Escriba su mensaje...</label>
+                            <textarea name="message" id="message" cols="30" rows="7"
+                                      class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row gsap-reveal">
+                        <div class="col-md-12 d-flex align-items-center">
+                            <input type="submit" class="btn btn-outline-pill btn-custom-light mr-3"
+                                   value="Enviar Mensaje">
+                            <span class="submitting"></span>
+                        </div>
+                    </div>
+                </form>
+                <div id="form-message-warning" class="mt-4"></div>
+                <div id="form-message-success">
+                    Tu mensaje fue enviado, ¡gracias!
+                </div>
+
+            </div>
+            {% if contact %}
+            <div class="col-md-4">
+                {% for c in contact %}
+                <div class="contact-info-v1">
+                    <div class="gsap-reveal d-block">
+                        {% if c.correo_electronico %}
+                        <span class="d-block contact-info-label">Correo Electronico</span>
+                        <a href="#" class="contact-info-val">{{c.correo_electronico}}</a>
+                        {% endif %}
+                    </div>
+                    <div class="gsap-reveal d-block">
+                        {% if c.numero_contacto %}
+                        <span class="d-block contact-info-label">Telefono</span>
+                        <a href="#" class="contact-info-val">{{c.numero_contacto}}</a>
+                        {% endif %}
+                    </div>
+                    <div class="gsap-reveal d-block">
+                        {% if c.ubicacion %}
+                        <span class="d-block contact-info-label">Ubicacion</span>
+                        <address class="contact-info-val">{{c.ubicacion}}</address>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
